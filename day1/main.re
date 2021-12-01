@@ -14,48 +14,42 @@ print(f"part 1: {part1(nums)}");
 print(f"part 2: {part2(nums)}");
 
 fn part1(nums: List<int>) -> int {
-    let mut last = Option::None;
-    let mut result = 0;
-    for num in nums {
-        match last {
-            Option::None => (),
-            Option::Some(last_num) => {
-                if last_num < num {
-                    result = result + 1;
-                }
+    if nums.len() < 1 {
+        0
+    } else {
+        let mut last = nums.get(0).unwrap();
+        let nums = nums.slice(1);
+        let mut result = 0;
+        for num in nums {
+            if last < num {
+                result = result + 1;
             }
+            last = num;
         }
-        last = Option::Some(num);
+        result
     }
-    result
 }
 
 fn part2(nums: List<int>) -> int {
-    let mut last3 = Option::None;
-    let mut last2 = Option::None;
-    let mut last1 = Option::None;
-    let mut result = 0;
-    for num in nums {
-        match last3 {
-            Option::Some(last3_num) => match last2 {
-                Option::Some(last2_num) => match last1 {
-                    Option::Some(last1_num) => {
-                        let last = last3_num + last2_num + last1_num;
-                        let curr = last2_num + last1_num + num;
-                        if last < curr {
-                            result = result + 1;
-                        }
-                    },
-                    Option::None => (),
-                },
-                Option::None => (),
-            },
-            Option::None => (),
+    if nums.len() < 3 {
+        0
+    } else {
+        let mut last3 = nums.get(0).unwrap();
+        let mut last2 = nums.get(1).unwrap();
+        let mut last1 = nums.get(2).unwrap();
+        let nums = nums.slice(3);
+        let mut result = 0;
+        for num in nums {
+            let last = last3 + last2 + last1;
+            let curr = last2 + last1 + num;
+            if last < curr {
+                result = result + 1;
+            }
+            last3 = last2;
+            last2 = last1;
+            last1 = num;
         }
-        last3 = last2;
-        last2 = last1;
-        last1 = Option::Some(num);
+        result
     }
-    result
 }
 
